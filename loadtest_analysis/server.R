@@ -5,19 +5,21 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
+library(shiny) # load shiny at beginning at both scripts
 
-shinyServer(function(input, output) {
-
-  output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
-  })
-
+shinyServer(function(input, output) { # “server is defined within
+    # these parentheses
+    
+    output$plotRnorm        <- renderPlot(plot(density(rnorm(input$inSlide))))
+    
+    output$textDisplay <- renderText({ # mark function as reactive
+        # and assign to
+        # output$textDisplay for
+        # passing to ui.R
+        
+        paste0("You said '", input$comment,           # from the text
+               "'. There are ", nchar(input$comment), # input control as
+               " characters in this."                             # defined in ui.R
+        )
+    })
 })
