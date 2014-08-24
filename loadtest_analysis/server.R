@@ -10,7 +10,7 @@ library(latticeExtra)
 
 source("ReadData.R")
 source("summarizeData.R")
-source("plotData2.R")
+source("plotData.R")
 
 
 # Define server logic for random distribution application
@@ -58,28 +58,38 @@ shinyServer(function(input, output, session) {
         updateSelectInput(session, "selected.Trans", choices = trans.list, selected=x)
     
     })
-    
-    
 
-    output$density.plot <- renderPlot({
+    output$plot.2 <- renderPlot({
         
-        #df <- read.data()
-        ss <- subset(df, trans_name == input$selected.Trans)
-        if (input$selected.Trans != "All") {
-            plot(density(ss$trans_resp_time), main=paste0("Transaction = ", input$selected.Trans))
-        } else {
-            plot(density(df$trans_resp_time), main=paste0("Transaction = ", input$selected.Trans))
-        }
+        plot.2()
+        
+    })
+    
+    output$denisty.FULL.plot <- renderPlot({
+        
+        density.plot.data(df, input$selected.Trans, as.numeric(input$low), as.numeric(input$high), 'FULL')
+            
+    })
+
+    output$denisty.TRIMMED.plot <- renderPlot({
+        
+        density.plot.data(df, input$selected.Trans, as.numeric(input$low), as.numeric(input$high), 'TRIMMED')    
+        
+    })
+    
+    
+    output$response.time.plot <- renderPlot({
+        
+        response.time.plot.data(df, input$selected.Trans, as.numeric(input$low), as.numeric(input$high), 'FULL')
+        
+    })
+    
+    output$trans.per.interval.plot <- renderPlot({
+        
+        trans.per.interval.plot.data(df, input$selected.Trans, as.numeric(input$low), as.numeric(input$high), 'FULL')
         
     })
 
-    output$transaction.plot <- renderPlot({
-        
-        #df <- read.data()
-        
-        plot.data(df, input$selected.Trans)
-        
-    })
     
     output$debug <- renderText({
         paste0("Selected TRansaction: ", input$selected.Trans, "\n")
@@ -89,11 +99,15 @@ shinyServer(function(input, output, session) {
     # Generate a summary of the data
     output$summary <- renderDataTable({
         df <- read.data()
-        summarize.data(df, as.numeric(input$low), as.numeric(input$high))
+        summarize.data(df, input$selected.Trans, as.numeric(input$low), as.numeric(input$high))
     })
     
     # Generate an HTML table view of the data
     output$raw.data <- renderDataTable({
-        read.data()
+        if (input$selected.Trans == 'All') {
+            read.data()
+        } else {
+            subset(read.data(), trans_name == input$selected.Trans)
+        }
     })
 })

@@ -40,9 +40,9 @@ shinyUI(pageWithSidebar(
         
         helpText("Note: The data was loaded from a funciton within the code.",
                  "The data was from an actual test, however, it has been",
-                 "ananymozed due to requirements from the business..."),
+                 "ananymozed due to requirements from the business...")
         
-        submitButton("Update View")
+        #submitButton("Update View")
         
     ),
     
@@ -51,9 +51,21 @@ shinyUI(pageWithSidebar(
     # of the generated distribution
     mainPanel(
         tabsetPanel(
-            tabPanel("Raw Data", textOutput("debug"), dataTableOutput("raw.data")), 
+            tabPanel("Raw Data", textOutput("debug"), dataTableOutput("raw.data")),
+            
             tabPanel("Summary", dataTableOutput("summary")), 
-            tabPanel("Transaction", plotOutput("transaction.plot"))
+            
+            tabPanel("Transaction", #plotOutput("denisty.FULL.plot"),
+                     
+                     h2("FULL DATA: Density Plot", align = "center"),
+                     plotOutput("denisty.FULL.plot"),
+                     h2("TRIMMED DATA: Density Plot", align = "center"),
+                     plotOutput("denisty.TRIMMED.plot"),
+                     h2("Transactions by Time", align = "center"),
+                     plotOutput("response.time.plot"),
+                     h2("Transactions per Interval", align = "center"),
+                     plotOutput("trans.per.interval.plot")
+                     )
         )
     )
 ))
