@@ -16,7 +16,8 @@ shinyUI(pageWithSidebar(
     # and number of observations to generate. Note the use of the br()
     # element to introduce extra vertical spacing
     sidebarPanel(
-                
+        
+        h3("Filter Transaction Data:"),
         selectInput("selected.Trans", "Transactions:",
                     c("All" = "All"
                       )),
@@ -38,9 +39,15 @@ shinyUI(pageWithSidebar(
                     max = .99,
                     step=.01),
         
-        helpText("Note: The data was loaded from a funciton within the code.",
-                 "The data was from an actual test, however, it has been",
-                 "ananymozed due to requirements from the business...")
+        h3("loadtest Description:"),
+        helpText("The loadtest shiny App analyzes transaction data generated during",
+                 "an application loadtest to determine transaction response time.",
+                 "The app allows the user to filter the data by transaction and set the",
+                 "high and low trim to determine how many outliers will be removed from", 
+                 "statistical analysis on the Summary Tab, the Transaction Tab has diagnostic",
+                 "plots to aid in the analysis of the test by reviewing response time distributions",
+                 "and showing the transaction over time and count by sampling period",
+                 " See https://github.com/saoconnell/DS_Data_Products_Project for more details")
         
         #submitButton("Update View")
         
